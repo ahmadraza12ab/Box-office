@@ -1,29 +1,45 @@
-/* eslint-disable no-console */
+/* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
+// eslint-disable-next-line import/no-unresolved
+import { apiGet } from '../misc/config';
 
-function Home() {
+const Home = () => {
   const [input, setInput] = useState('');
-  const onInputChange = ev => {
-    // eslint-disable-next-line no-console
-    console.log(ev.target.value);
-    setInput(ev.target.velue);
-  };
-  const onSearch = () => {
-    // https://api.tvmaze.com/search/shows?q=men
+  const [results, setResults] = useState(null);
 
-    fetch(`https://api.tvmaze.com/search/shows?q=${input}`)
-      .then(r => r.json())
-      .then(result => {
-        // eslint-disable-next-line no-console
-        console.log(result);
-      });
+  const onSearch = () => {
+    apiGet(`/search/shows?q=${input}`).then(result => {
+      setResults(result);
+    });
   };
+
+  const onInputChange = ev => {
+    setInput(ev.target.value);
+  };
+
   const onKeyDown = ev => {
     if (ev.keyCode === 13) {
       onSearch();
     }
-    console.log(ev.keyCode);
+  };
+
+  const renderResults = () => {
+    if (results && results.length === 0) {
+      return <div>No results</div>;
+    }
+
+    if (results && results.length > 0) {
+      return (
+        <div>
+          {results.map(item => (
+            <div key={item.show.id}>{item.show.name}</div>
+          ))}
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -37,8 +53,9 @@ function Home() {
       <button type="button" onClick={onSearch}>
         Search
       </button>
+      {renderResults()}
     </MainPageLayout>
   );
-}
+};
 
 export default Home;

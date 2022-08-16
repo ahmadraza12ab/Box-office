@@ -1,8 +1,10 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 import Navs from './Navs';
 import Title from './Title';
 
-function MainPageLayout({ children }) {
+const MainPageLayout = ({ children }) => {
   return (
     <div>
       <Title
@@ -10,9 +12,10 @@ function MainPageLayout({ children }) {
         subtitle="Are you looking for a movie or an actor?"
       />
       <Navs />
+
       {children}
     </div>
   );
-}
+};
 
 export default MainPageLayout;
