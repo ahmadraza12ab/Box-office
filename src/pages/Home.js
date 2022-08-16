@@ -1,19 +1,16 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable no-console */
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
+import { apiGet } from '../misc/config';
 import ShowGrid from '../components/show/ShowGrid';
 import ActorGrid from '../components/actor/ActorGrid';
-// eslint-disable-next-line import/no-unresolved
-import { apiGet } from '../misc/config';
 
 const Home = () => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState(null);
   const [searchOption, setSearchOption] = useState('shows');
-  const isShowsSearch = searchOption === 'shows';
 
+  const isShowsSearch = searchOption === 'shows';
   const onSearch = () => {
     apiGet(`/search/${searchOption}?q=${input}`).then(result => {
       setResults(result);
@@ -29,11 +26,10 @@ const Home = () => {
       onSearch();
     }
   };
+
   const onRadioChange = ev => {
     setSearchOption(ev.target.value);
   };
-
-  console.log(searchOption);
 
   const renderResults = () => {
     if (results && results.length === 0) {
@@ -60,6 +56,7 @@ const Home = () => {
         onKeyDown={onKeyDown}
         value={input}
       />
+
       <div>
         <label htmlFor="shows-search">
           Shows
@@ -71,6 +68,7 @@ const Home = () => {
             onChange={onRadioChange}
           />
         </label>
+
         <label htmlFor="actors-search">
           Actors
           <input
@@ -82,6 +80,7 @@ const Home = () => {
           />
         </label>
       </div>
+
       <button type="button" onClick={onSearch}>
         Search
       </button>
